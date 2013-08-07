@@ -1313,6 +1313,13 @@ static NSTimeInterval durationToAnimate(CGFloat pointsToAnimate, CGFloat velocit
         controller.view.tag = controller.view.tag; // access view property so that viewDidLoad is called before viewWillAppear is view is not loaded
         BOOL (*objc_msgSendTyped)(id self, SEL _cmd, BOOL animated) = (void*)objc_msgSend;
         objc_msgSendTyped(controller, selector, animated);
+
+        // Modified by Jiang Liyin for that child view controller's method not be called.
+        for (UIViewController *child in controller.childViewControllers) {
+          child.view.tag = child.view.tag;
+          BOOL (*objc_msgSendTyped)(id self, SEL _cmd, BOOL animated) = (void*)objc_msgSend;
+          objc_msgSendTyped(child, selector, animated);
+        }
     }
 }
 
